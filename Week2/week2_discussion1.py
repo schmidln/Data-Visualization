@@ -23,53 +23,45 @@ def visualization1(data):
     return chart
 
 def visualization2(data):
-
-    scatterplot = alt.Chart(cars).mark_circle().encode(
-        x=alt.X('Income:Q'),
-        y=alt.Y('Population:Q')
+    data['Population_In_Millions'] = data['Population'] / 1_000_000
+    chart = alt.Chart(data, title="Total Population per Region (OECD, 2014)").mark_bar().encode(
+        x=alt.X('Region:N', title='Region'),
+        y=alt.Y('sum(Population_In_Millions):Q', title='Population (in millions)'),
+        color=alt.Color('Region:N', legend=alt.Legend(title="Region")),
+        tooltip=[
+            alt.Tooltip('Region:N', title='Region'),
+            alt.Tooltip('sum(Population_In_Millions):Q', title='Population (in millions)', format='.0f')
+        ]
+    ).properties(
+        width=600,
+        height=400
+    ).configure_title(
+        fontSize=18,
+        anchor='middle',
+        font='Helvetica'
+    ).configure_axis(
+        labelFontSize=12,
+        titleFontSize=14
     )
-
-    heatmap = alt.Chart(data).mark_rect().encode(
-        x=alt.X('Income:Q').bin(),
-        y=alt.Y('Population:Q').bin(),
-        color = alt.Color('count():Q')
-    )
-
-    chart = alt.layer(heatmap,scatterplot)
-
-    # data['Population_In_Millions'] = data['Population'] / 1_000_000
-    # chart = alt.Chart(data, title="Total Population per Region (OECD, 2014)").mark_bar().encode(
-    #     x=alt.X('Region:N', title='Region'),
-    #     y=alt.Y('sum(Population_In_Millions):Q', title='Population (in millions)'),
-    #     color=alt.Color('Region:N', legend=alt.Legend(title="Region")),
-    #     tooltip=[
-    #         alt.Tooltip('Region:N', title='Region'),
-    #         alt.Tooltip('sum(Population_In_Millions):Q', title='Population (in millions)', format='.0f')
-    #     ]
-    # ).properties(
-    #     width=600,
-    #     height=400
-    # ).configure_title(
-    #     fontSize=18,
-    #     anchor='middle',
-    #     font='Helvetica'
-    # ).configure_axis(
-    #     labelFontSize=12,
-    #     titleFontSize=14
-    # )
     return chart
 
 def visualization3(data):
-    # Create new column for scaled population (though not used here yet)
-    data['Population_In_Millions'] = data['Population'] / 1_000_000
 
     # Create chart
     chart = alt.Chart(data, title="Avg Life Expectancy by Region (OECD, 2014)").transform_aggregate(
-        avg_life_expectancy='mean(Life Expectancy)',
+        avg_life_expectancy='mean(LifeExpectancy)',
+        avg_population='mean(Population)',
+        avg_income='mean(Income)',
         groupby=['Region']
-    ).mark_circle(size=100).encode(
+    ).mark_circle().encode(
         x=alt.X('Region:N', title='Region'),
-        y=alt.Y('avg_life_expectancy:Q', title='Avg Life Expectancy (Years)'),
+        y=alt.Y('avg_life_expectancy:Q', 
+                title='Avg Life Expectancy (Years)',
+                scale=alt.Scale(domain=[60,80])),
+        size=alt.Size('avg_population:Q', title='Avg Population', scale=alt.Scale(range=[0, 20000])),
+        color=alt.Color('avg_income:Q',
+                      title='Avg Income (USD)',
+                      scale=alt.Scale(scheme='blues')),
         tooltip=['Region:N', 'avg_life_expectancy:Q']
     ).properties(
         width=600,
