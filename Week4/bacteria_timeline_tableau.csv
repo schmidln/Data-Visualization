@@ -1,0 +1,49 @@
+Bacteria,Gram_Staining,Genus,Antibiotic,MIC,Order
+Staphylococcus aureus,positive,Staphylococcus,Neomycin,0.001,1
+Staphylococcus aureus,positive,Staphylococcus,Penicillin,0.03,1
+Staphylococcus aureus,positive,Staphylococcus,Streptomycin,0.03,1
+Staphylococcus albus,positive,Staphylococcus,Neomycin,0.001,2
+Staphylococcus albus,positive,Staphylococcus,Penicillin,0.007,2
+Staphylococcus albus,positive,Staphylococcus,Streptomycin,0.1,2
+Streptococcus hemolyticus,positive,Streptococcus,Neomycin,10.0,3
+Streptococcus hemolyticus,positive,Streptococcus,Penicillin,0.001,3
+Streptococcus hemolyticus,positive,Streptococcus,Streptomycin,14.0,3
+Streptococcus viridans,positive,Streptococcus,Neomycin,40.0,4
+Streptococcus viridans,positive,Streptococcus,Penicillin,0.005,4
+Streptococcus viridans,positive,Streptococcus,Streptomycin,10.0,4
+Streptococcus fecalis,positive,Streptococcus,Neomycin,0.1,5
+Streptococcus fecalis,positive,Streptococcus,Penicillin,1.0,5
+Streptococcus fecalis,positive,Streptococcus,Streptomycin,1.0,5
+Diplococcus pneumoniae,positive,other,Neomycin,10.0,6
+Diplococcus pneumoniae,positive,other,Penicillin,0.005,6
+Diplococcus pneumoniae,positive,other,Streptomycin,11.0,6
+Bacillus anthracis,positive,other,Neomycin,0.007,7
+Bacillus anthracis,positive,other,Penicillin,0.001,7
+Bacillus anthracis,positive,other,Streptomycin,0.01,7
+Brucella abortus,negative,other,Neomycin,0.02,8
+Brucella abortus,negative,other,Penicillin,1.0,8
+Brucella abortus,negative,other,Streptomycin,2.0,8
+Escherichia coli,negative,other,Neomycin,0.1,9
+Escherichia coli,negative,other,Penicillin,100.0,9
+Escherichia coli,negative,other,Streptomycin,0.4,9
+Salmonella (Eberthella) typhosa,negative,Salmonella,Neomycin,0.008,10
+Salmonella (Eberthella) typhosa,negative,Salmonella,Penicillin,1.0,10
+Salmonella (Eberthella) typhosa,negative,Salmonella,Streptomycin,0.4,10
+Salmonella schottmuelleri,negative,Salmonella,Neomycin,0.09,11
+Salmonella schottmuelleri,negative,Salmonella,Penicillin,10.0,11
+Salmonella schottmuelleri,negative,Salmonella,Streptomycin,0.8,11
+Mycobacterium tuberculosis,negative,other,Neomycin,2.0,12
+Mycobacterium tuberculosis,negative,other,Penicillin,800.0,12
+Mycobacterium tuberculosis,negative,other,Streptomycin,5.0,12
+Proteus vulgaris,negative,other,Neomycin,0.1,13
+Proteus vulgaris,negative,other,Penicillin,3.0,13
+Proteus vulgaris,negative,other,Streptomycin,0.1,13
+Pseudomonas aeruginosa,negative,other,Neomycin,0.4,14
+Pseudomonas aeruginosa,negative,other,Penicillin,850.0,14
+Pseudomonas aeruginosa,negative,other,Streptomycin,2.0,14
+Klebsiella pneumoniae,negative,other,Neomycin,1.0,15
+Klebsiella pneumoniae,negative,other,Penicillin,850.0,15
+Klebsiella pneumoniae,negative,other,Streptomycin,1.2,15
+Aerobacter aerogenes,negative,other,Neomycin,1.6,16
+Aerobacter aerogenes,negative,other,Penicillin,870.0,16
+Aerobacter aerogenes,negative,other,Streptomycin,1.0,16
