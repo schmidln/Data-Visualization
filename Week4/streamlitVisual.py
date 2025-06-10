@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import numpy as np  # <-- add this import
-import os
+# import os
 
-# Ensure current working directory is set correctly
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# # Ensure current working directory is set correctly
+# os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Load the data
 df = pd.read_csv("bacteria_timeline_tableau.csv")
@@ -31,4 +31,5 @@ chart = alt.Chart(df).mark_circle().encode(
     anchor='start'
 )
 
-chart.show()
+st.altair_chart(chart, use_container_width=True)
+
