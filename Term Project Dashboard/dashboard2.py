@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import os
 
-# Load data
-df = pd.read_csv("social_media_vs_productivity.csv")
+# Absolute-safe path to ensure compatibility
+df = pd.read_csv(os.path.join(os.path.dirname(__file__), "social_media_vs_productivity.csv"))
+
 
 st.title("📉 Social Media, Productivity & Human Patterns")
 
