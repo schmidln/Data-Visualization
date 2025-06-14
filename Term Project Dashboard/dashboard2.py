@@ -3,7 +3,7 @@ import pandas as pd
 import altair as alt
 
 # Load data
-df = pd.read_csv("social_media_vs_productivity 2.csv")
+df = pd.read_csv("social_media_vs_productivity.csv")
 
 st.title("📉 Social Media, Productivity & Human Patterns")
 
