@@ -128,9 +128,9 @@ def create_chart(plot_df, bacteria_order, title):
     return chart
 
 def main():
-    st.set_page_config(page_title="Antibiotic Effectiveness Explorer", layout="wide")
+    st.set_page_config(page_title="Antibiotic Effectiveness Explorer - We're Prepared!", layout="wide")
     
-    st.title("🧬 Antibiotic Effectiveness Explorer")
+    st.markdown('<h1 style="font-size:38px;">🧬 Antibiotic Effectiveness Explorer - We are Prepared!</h1>', unsafe_allow_html=True)
     st.markdown("""
     Explore antibiotic effectiveness against different bacterial strains.  
     Humans are generally prepared to fight the most common and dangerous bacterial infections with our arsenal of antibiotics.
