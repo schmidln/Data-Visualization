@@ -7,7 +7,7 @@ import numpy as np
 @st.cache_data
 def load_and_process_data():
     """Load and preprocess the bacteria antibiotics data."""
-    df = pd.read_csv("bacteria_with_spacer.csv")
+    df = pd.read_csv("bacteriaWithSpacer.csv")
     
     # Remove spacer rows
     df = df[df["Bacteria"] != "---"].copy()
@@ -144,7 +144,7 @@ def main():
     try:
         df_long, original_order = load_and_process_data()
     except FileNotFoundError:
-        st.error("Data file 'bacteria_with_spacer.csv' not found. Please ensure the file is in the correct location.")
+        st.error("Data file 'bacteriaWithSpacer.csv' not found. Please ensure the file is in the correct location.")
         return
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
