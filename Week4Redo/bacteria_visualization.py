@@ -7,7 +7,7 @@ import numpy as np
 @st.cache_data
 def load_and_process_data():
     """Load and preprocess the bacteria antibiotics data."""
-    df = pd.read_csv("bacteriaWithSpacer.csv")
+    df = pd.read_csv("./bacteriaWithSpacer.csv")
     
     # Remove spacer rows
     df = df[df["Bacteria"] != "---"].copy()
