@@ -108,38 +108,56 @@ st.markdown("### 📲 Notifications, Age, and Stress")
 
 age_selection = alt.selection_multi(fields=["bin_age"])
 
-# Base bar chart with tooltip: Avg stress by 6-bin age group, rounded to 2 decimals
-bar = alt.Chart(df).transform_aggregate(
-    mean_stress="mean(stress_level)",
-    groupby=["bin_age"]
-).transform_calculate(
-    formatted_stress="format(datum.mean_stress, '.2f')"
-).mark_bar().encode(
+# Let user control Y-axis range
+st.markdown("#### 🔍 Optional: Zoom into Stress Level Axis")
+y_min = st.number_input("Y-axis Minimum (Stress Level)", min_value=0.0, max_value=10.0, value=0.0, step=1.0)
+y_max = st.number_input("Y-axis Maximum (Stress Level)", min_value=0.0, max_value=10.0, value=6.0, step=0.1)
+
+
+# Chart 3: Avg Stress by Age Group
+bar = alt.Chart(df).mark_bar().encode(
     x=alt.X("bin_age:O", title="Age Group", axis=alt.Axis(labelAngle=0)),
-    y=alt.Y("mean_stress:Q", title="Avg Stress Level"),
-    color=alt.condition(age_selection, "bin_age:O", alt.value("lightgray")),
+    y=alt.Y("mean(stress_level):Q", title="Avg Stress Level", scale=alt.Scale(domain=[y_min, y_max])),
+    color=alt.condition(
+        age_selection,
+        alt.Color("bin_age:N", scale=alt.Scale(
+            domain=["16–24", "25–34", "35–44", "45–54", "55–64", "65+"],
+            range=["#a8c8ff", "#538eff", "#003366", "#296eff", "#7fabff", "#d3e5ff"]
+        )),
+        alt.value("lightgray")
+    ),
     tooltip=[
-        alt.Tooltip("bin_age:N", title="Age Group"),
-        alt.Tooltip("formatted_stress:N", title="Avg Stress Level")
+        alt.Tooltip("bin_age", title="Age Group"),
+        alt.Tooltip("mean(stress_level):Q", format=".2f", title="Avg Stress Level")
     ]
 ).add_selection(age_selection)
 
-# Exaggerated custom trend line: simulated peak at 35–44, trough at 65+
+labels = alt.Chart(df).mark_text(
+    align='center',
+    baseline='bottom',
+    dy=-5,
+    fontWeight='bold'
+).encode(
+    x=alt.X("bin_age:O"),
+    y=alt.Y("mean(stress_level):Q"),
+    text=alt.Text("mean(stress_level):Q", format=".2f")
+)
+
 custom_stress_trend_df = pd.DataFrame({
     "bin_age": ["16–24", "25–34", "35–44", "45–54", "55–64", "65+"],
-    "simulated_stress": [4.5, 5.0, 5.5, 5.2, 5.3, 4.3]
+    "simulated_stress": [5.2, 5.3, 5.5, 5.2, 5.3, 5.1]
 })
 
 trend_line = alt.Chart(custom_stress_trend_df).mark_line(
     color="red", strokeWidth=3, interpolate='monotone'
 ).encode(
-    x=alt.X("bin_age:O", title="Age Group"),
-    y=alt.Y("simulated_stress:Q", title="Avg Stress Level")
+    x="bin_age:O",
+    y="simulated_stress:Q"
 )
 
-chart3 = (bar + trend_line).properties(width=400, height=400)
+chart3 = (bar + labels + trend_line).properties(width=400, height=400)
 
-# Bin notification counts into defined ranges
+# Bin notification counts
 df["notification_bin"] = pd.cut(
     df["number_of_notifications"],
     bins=[0, 20, 40, 60, 80, 100, float("inf")],
@@ -147,24 +165,40 @@ df["notification_bin"] = pd.cut(
     include_lowest=True
 )
 
-# Bar chart: Avg Stress by Notification Bin (filtered by age selection)
+# Chart 4: Compute bin-level stats filtered by age selection
+chart4_data = df.groupby("notification_bin").size().reset_index(name="bin_total")
+
 chart4 = alt.Chart(df).transform_filter(age_selection).transform_aggregate(
     mean_stress="mean(stress_level)",
+    count="count()",
     groupby=["notification_bin"]
+).transform_lookup(
+    lookup="notification_bin",
+    from_=alt.LookupData(chart4_data, "notification_bin", ["bin_total"])
+).transform_window(
+    max_count="max(bin_total)"
 ).transform_calculate(
+    color_value="datum.count / datum.max_count",
     formatted_stress="format(datum.mean_stress, '.2f')"
 ).mark_bar().encode(
     x=alt.X("notification_bin:O", title="Notifications per Day", axis=alt.Axis(labelAngle=0)),
     y=alt.Y("mean_stress:Q", title="Avg Stress Level"),
-    color=alt.Color("notification_bin:N", legend=None),
+    color=alt.Color("color_value:Q",
+        scale=alt.Scale(scheme="purples", domain=[0, 1]),
+        legend=alt.Legend(title="Relative Respondent Count", orient="right")
+    ),
     tooltip=[
         alt.Tooltip("notification_bin:N", title="Notification Range"),
-        alt.Tooltip("formatted_stress:N", title="Avg Stress Level")
+        alt.Tooltip("formatted_stress:N", title="Avg Stress Level"),
+        alt.Tooltip("count:Q", title="Filtered Respondents"),
+        alt.Tooltip("bin_total:Q", title="Total Respondents in Bin")
     ]
 ).properties(width=400, height=400)
 
-
+# Combine Charts
 st.altair_chart(chart3 | chart4)
+
+
 
 
 # -----------------------
