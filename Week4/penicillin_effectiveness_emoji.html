@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"mark": {"type": "bar"}, "encoding": {"color": {"field": "Gram_Staining", "legend": {"title": "Gram Staining"}, "type": "nominal"}, "tooltip": [{"field": "Bacteria", "type": "nominal"}, {"field": "MIC", "type": "quantitative"}, {"field": "Gram_Staining", "type": "nominal"}, {"field": "Effectiveness", "type": "nominal"}], "x": {"field": "log_MIC", "title": "-log10(MIC) (Effectiveness \u2191)", "type": "quantitative"}, "y": {"field": "Bacteria", "sort": "-x", "type": "nominal"}}}, {"mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 5}, "encoding": {"text": {"field": "Effectiveness", "type": "nominal"}, "x": {"field": "log_MIC", "type": "quantitative"}, "y": {"field": "Bacteria", "sort": "-x", "type": "nominal"}}}], "data": {"name": "data-9b613e4e0281ba273bee9b11235e1bdd"}, "height": 400, "title": "Penicillin Effectiveness by Bacteria (with Emoji Annotation)", "width": 520, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-9b613e4e0281ba273bee9b11235e1bdd": [{"Bacteria": "Staphylococcus aureus", "Gram_Staining": "positive", "Genus": "Staphylococcus", "Antibiotic": "Penicillin", "MIC": 0.03, "Order": 1, "log_MIC": 1.52, "Effectiveness": "\ud83d\udfe1 Moderate \ud83d\udc4d"}, {"Bacteria": "Staphylococcus albus", "Gram_Staining": "positive", "Genus": "Staphylococcus", "Antibiotic": "Penicillin", "MIC": 0.007, "Order": 2, "log_MIC": 2.15, "Effectiveness": "\ud83d\udfe2 Very Effective \u2705"}, {"Bacteria": "Streptococcus hemolyticus", "Gram_Staining": "positive", "Genus": "Streptococcus", "Antibiotic": "Penicillin", "MIC": 0.001, "Order": 3, "log_MIC": 3.0, "Effectiveness": "\ud83d\udfe2 Very Effective \u2705"}, {"Bacteria": "Streptococcus viridans", "Gram_Staining": "positive", "Genus": "Streptococcus", "Antibiotic": "Penicillin", "MIC": 0.005, "Order": 4, "log_MIC": 2.3, "Effectiveness": "\ud83d\udfe2 Very Effective \u2705"}, {"Bacteria": "Streptococcus fecalis", "Gram_Staining": "positive", "Genus": "Streptococcus", "Antibiotic": "Penicillin", "MIC": 1.0, "Order": 5, "log_MIC": -0.0, "Effectiveness": "\ud83d\udfe0 Low \ud83d\ude10"}, {"Bacteria": "Diplococcus pneumoniae", "Gram_Staining": "positive", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 0.005, "Order": 6, "log_MIC": 2.3, "Effectiveness": "\ud83d\udfe2 Very Effective \u2705"}, {"Bacteria": "Bacillus anthracis", "Gram_Staining": "positive", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 0.001, "Order": 7, "log_MIC": 3.0, "Effectiveness": "\ud83d\udfe2 Very Effective \u2705"}, {"Bacteria": "Brucella abortus", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 1.0, "Order": 8, "log_MIC": -0.0, "Effectiveness": "\ud83d\udfe0 Low \ud83d\ude10"}, {"Bacteria": "Escherichia coli", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 100.0, "Order": 9, "log_MIC": -2.0, "Effectiveness": "\ud83d\udd34 Poor \u274c"}, {"Bacteria": "Salmonella (Eberthella) typhosa", "Gram_Staining": "negative", "Genus": "Salmonella", "Antibiotic": "Penicillin", "MIC": 1.0, "Order": 10, "log_MIC": -0.0, "Effectiveness": "\ud83d\udfe0 Low \ud83d\ude10"}, {"Bacteria": "Salmonella schottmuelleri", "Gram_Staining": "negative", "Genus": "Salmonella", "Antibiotic": "Penicillin", "MIC": 10.0, "Order": 11, "log_MIC": -1.0, "Effectiveness": "\ud83d\udd34 Poor \u274c"}, {"Bacteria": "Mycobacterium tuberculosis", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 800.0, "Order": 12, "log_MIC": -2.9, "Effectiveness": "\ud83d\udd34 Poor \u274c"}, {"Bacteria": "Proteus vulgaris", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 3.0, "Order": 13, "log_MIC": -0.48, "Effectiveness": "\ud83d\udd34 Poor \u274c"}, {"Bacteria": "Pseudomonas aeruginosa", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 850.0, "Order": 14, "log_MIC": -2.93, "Effectiveness": "\ud83d\udd34 Poor \u274c"}, {"Bacteria": "Klebsiella pneumoniae", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 850.0, "Order": 15, "log_MIC": -2.93, "Effectiveness": "\ud83d\udd34 Poor \u274c"}, {"Bacteria": "Aerobacter aerogenes", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Penicillin", "MIC": 870.0, "Order": 16, "log_MIC": -2.94, "Effectiveness": "\ud83d\udd34 Poor \u274c"}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

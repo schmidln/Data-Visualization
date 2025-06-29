@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.20.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-4ac6461245f80dd141d923169ef8d969"}, "mark": {"type": "bar"}, "encoding": {"color": {"field": "Gram_Staining", "legend": {"title": "Gram Staining"}, "type": "nominal"}, "tooltip": [{"field": "Bacteria", "type": "nominal"}, {"field": "MIC", "type": "quantitative"}, {"field": "Gram_Staining", "type": "nominal"}], "x": {"field": "log_MIC", "title": "-log10(MIC) (Effectiveness \u2191)", "type": "quantitative"}, "y": {"field": "Bacteria", "sort": "-x", "type": "nominal"}}, "height": 400, "title": "Streptomycin Effectiveness by Bacteria", "width": 500, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-4ac6461245f80dd141d923169ef8d969": [{"Bacteria": "Staphylococcus aureus", "Gram_Staining": "positive", "Genus": "Staphylococcus", "Antibiotic": "Streptomycin", "MIC": 0.03, "Order": 1, "log_MIC": 1.52}, {"Bacteria": "Staphylococcus albus", "Gram_Staining": "positive", "Genus": "Staphylococcus", "Antibiotic": "Streptomycin", "MIC": 0.1, "Order": 2, "log_MIC": 1.0}, {"Bacteria": "Streptococcus hemolyticus", "Gram_Staining": "positive", "Genus": "Streptococcus", "Antibiotic": "Streptomycin", "MIC": 14.0, "Order": 3, "log_MIC": -1.15}, {"Bacteria": "Streptococcus viridans", "Gram_Staining": "positive", "Genus": "Streptococcus", "Antibiotic": "Streptomycin", "MIC": 10.0, "Order": 4, "log_MIC": -1.0}, {"Bacteria": "Streptococcus fecalis", "Gram_Staining": "positive", "Genus": "Streptococcus", "Antibiotic": "Streptomycin", "MIC": 1.0, "Order": 5, "log_MIC": -0.0}, {"Bacteria": "Diplococcus pneumoniae", "Gram_Staining": "positive", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 11.0, "Order": 6, "log_MIC": -1.04}, {"Bacteria": "Bacillus anthracis", "Gram_Staining": "positive", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 0.01, "Order": 7, "log_MIC": 2.0}, {"Bacteria": "Brucella abortus", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 2.0, "Order": 8, "log_MIC": -0.3}, {"Bacteria": "Escherichia coli", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 0.4, "Order": 9, "log_MIC": 0.4}, {"Bacteria": "Salmonella (Eberthella) typhosa", "Gram_Staining": "negative", "Genus": "Salmonella", "Antibiotic": "Streptomycin", "MIC": 0.4, "Order": 10, "log_MIC": 0.4}, {"Bacteria": "Salmonella schottmuelleri", "Gram_Staining": "negative", "Genus": "Salmonella", "Antibiotic": "Streptomycin", "MIC": 0.8, "Order": 11, "log_MIC": 0.1}, {"Bacteria": "Mycobacterium tuberculosis", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 5.0, "Order": 12, "log_MIC": -0.7}, {"Bacteria": "Proteus vulgaris", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 0.1, "Order": 13, "log_MIC": 1.0}, {"Bacteria": "Pseudomonas aeruginosa", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 2.0, "Order": 14, "log_MIC": -0.3}, {"Bacteria": "Klebsiella pneumoniae", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 1.2, "Order": 15, "log_MIC": -0.08}, {"Bacteria": "Aerobacter aerogenes", "Gram_Staining": "negative", "Genus": "other", "Antibiotic": "Streptomycin", "MIC": 1.0, "Order": 16, "log_MIC": -0.0}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
