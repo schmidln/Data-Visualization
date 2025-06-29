@@ -2,4 +2,4 @@
 headless = true
 
 [packages]
-requirementsPath = "Term Project Dashboard/requirements.txt"
+requirementsPath = "term_project_dashboard/requirements.txt"
