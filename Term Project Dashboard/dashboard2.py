@@ -134,7 +134,15 @@ with st.container():
 # Chart 3: Avg Stress by Age Group
 bar = alt.Chart(df).mark_bar().encode(
     x=alt.X("bin_age:O", title="Age Group", axis=alt.Axis(labelAngle=0)),
-    y=alt.Y("mean(stress_level):Q", title="Avg Stress Level", scale=alt.Scale(domain=[y_min, y_max])),
+    y=alt.Y(
+        "mean(stress_level):Q",
+        title="Avg Stress Level",
+        scale=alt.Scale(domain=[y_min, y_max]),
+        axis=alt.Axis(
+            title="Avg Stress Level",
+            description="Represents the average self-reported stress level on a scale from 1 to 10."
+        )
+    ),
     color=alt.condition(
         age_selection,
         alt.Color("bin_age:N",
@@ -309,7 +317,14 @@ bar = alt.Chart(df).transform_aggregate(
     formatted_satisfaction="format(datum.mean_satisfaction, '.2f')"
 ).mark_bar().encode(
     x=alt.X("coarse_bin_age:O", title="Age Group", axis=alt.Axis(labelAngle=0)),
-    y=alt.Y("mean_satisfaction:Q", title="Avg Job Satisfaction"),
+    y=alt.Y(
+    "mean_satisfaction:Q",
+    title="Avg Job Satisfaction",
+    axis=alt.Axis(
+        title="Avg Job Satisfaction",
+        description="Computed as the average of self-reported job satisfaction scores (1–10)."
+        )
+    ),
     color=alt.condition(age_selection_2, "coarse_bin_age:O", alt.value("lightgray")),
     tooltip=[
         alt.Tooltip("coarse_bin_age:N", title="Age Group"),
@@ -321,8 +336,23 @@ chart5 = (bar + trend_line).properties(width=400, height=400)
 
 # Chart 6: Scatter + Regression, both rounded to 2 decimals
 scatter = alt.Chart(df).transform_filter(age_selection_2).mark_circle(size=70).encode(
-    x=alt.X("actual_productivity_score:Q", title="Actual Productivity Score"),
-    y=alt.Y("job_satisfaction_score:Q", title="Job Satisfaction Score"),
+    x=alt.X(
+        "actual_productivity_score:Q",
+        title="Actual Productivity Score",
+        axis=alt.Axis(
+            title="Actual Productivity Score",
+            description="Self-assessed score (1–10) based on perceived output and efficiency during work."
+        )
+    ),
+    y=alt.Y(
+        "job_satisfaction_score:Q",
+        title="Job Satisfaction Score",
+        axis=alt.Axis(
+            title="Job Satisfaction Score",
+            description="Respondent’s satisfaction with their job, on a 1–10 scale."
+        )
+    ),
+
     color=alt.Color("coarse_bin_age:O", legend=alt.Legend(title="Age Group")),
     tooltip=[
         alt.Tooltip("coarse_bin_age:N", title="Age Group"),
@@ -379,6 +409,22 @@ with st.expander("📌 Further Exploration - Filter Controls - Big Takeaway", ex
                 
     Overall, **consider using focus apps** as they may help **boost** **productivity** and **lower stress levels** even if you are not satisfied with your job.
     
+    """)
+
+
+with st.expander("ℹ️ About the Variables Used in This Dashboard", expanded=False):
+    st.markdown("""
+    **Avg Stress Level**:  
+    The average self-reported stress level on a scale from 1 (no stress) to 10 (extreme stress), based on survey responses.
+
+    **Avg Job Satisfaction**:  
+    A numerical average from self-reported satisfaction with one's job on a scale from 1 (not satisfied) to 10 (extremely satisfied).
+
+    **Actual Productivity Level**:  
+    A subjective measure of perceived productivity, derived from survey responses, also on a scale from 1 to 10.
+
+    **Note**:  
+    Some of these variables were collected using simulated or self-reported responses. While they illustrate potential correlations, viewers are encouraged to interpret them cautiously. Scaling adjustments may amplify visual trends that are not statistically significant.
     """)
 
 
