@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import os
+import seaborn as sns
+import matplotlib.pyplot as plt
+import streamlit as st
+import io
 
 # Load dataset
 df = pd.read_csv(os.path.join(os.path.dirname(__file__), "social_media_vs_productivity.csv"))
@@ -22,12 +26,15 @@ df["coarse_bin_age"] = pd.cut(
 )
 
 
-st.title("📉 Social Media, Productivity & Human Patterns")
+st.title("A Key to a Healthy & Happy Life: Finding a Job You Love")
 
 # -----------------------
 # 📌 SIDEBAR CONTROLS
 # -----------------------
 st.sidebar.header("🔧 Filter Controls")
+st.sidebar.markdown("""
+Use the filters below to explore the dataset and customize the visualizations. Please be patient as some charts may take a moment to load based on your selections.
+""")
 
 platform_options = sorted(df['social_platform_preference'].dropna().unique())
 platform_filter = st.sidebar.multiselect("Preferred Platform(s)", platform_options, default=platform_options)
@@ -74,44 +81,53 @@ df = df.dropna(subset=[
 # 📌 INTRO TEXT
 # -----------------------
 st.markdown("""
-This dataset explores the relationship between **social media usage**, **work behaviors**, and **self-perceived productivity** across different individuals.
-It includes variables such as preferred platforms, work hours, stress levels, digital habits, and job satisfaction.
+The prevailing question for anyone new to the workforce is often **how does our work affect our stress levels, specifically with age?** This dashboard
+explores this by investigating stress levels, job satisfaction, and notification counts across different age groups.
 """)
 
-# -----------------------
-# 📊 CHART SET 1: Gender Patterns
-# -----------------------
-st.markdown("### 👥 Habitual Patterns Across Genders")
-
-gender_selection = alt.selection_multi(fields=["gender"])
-
-chart2 = alt.Chart(df).mark_bar().encode(
-    x=alt.X("gender:N", title="Gender"),
-    y=alt.Y("mean(work_hours_per_day):Q", title="Avg Work Hours"),
-    color=alt.condition(gender_selection, "gender:N", alt.value("lightgray")),
-    tooltip=["gender", "mean(work_hours_per_day):Q"]
-).add_selection(gender_selection).properties(width=400, height=400)
-
-chart1 = alt.Chart(df).transform_filter(gender_selection).mark_circle(size=70).encode(
-    x=alt.X("daily_social_media_time:Q", title="Daily Social Media Time (hrs)"),
-    y=alt.Y("work_hours_per_day:Q", title="Work Hours Per Day"),
-    color="gender:N",
-    tooltip=["gender", "job_type", "daily_social_media_time", "work_hours_per_day"]
-).properties(width=400, height=400)
-
-st.altair_chart(chart2 | chart1)
+st.markdown("<br><br>", unsafe_allow_html=True)
 
 # -----------------------
-# 📊 CHART SET 2: Notifications & Stress by Age
+# 📊 CHART SET 1: Notifications & Stress by Age
 # -----------------------
-st.markdown("### 📲 Notifications, Age, and Stress")
+st.markdown("### 📲 Stress May Decrease with Age and Notifications")
+st.markdown(
+    "<div style='font-size:0.9rem; color:gray;'>Try clicking the bars in the Age vs Stress chart to learn more about each age group's notification usage.</div>",
+    unsafe_allow_html=True
+)
+
+st.markdown("<br><br>", unsafe_allow_html=True)
 
 age_selection = alt.selection_multi(fields=["bin_age"])
 
 # Let user control Y-axis range
-st.markdown("#### 🔍 Optional: Zoom into Stress Level Axis")
-y_min = st.number_input("Y-axis Minimum (Stress Level)", min_value=0.0, max_value=10.0, value=0.0, step=1.0)
-y_max = st.number_input("Y-axis Maximum (Stress Level)", min_value=0.0, max_value=10.0, value=6.0, step=0.1)
+with st.container():
+    subcol1, subcol2, subcol3 = st.columns([0.03, 0.64, 0.33])  # Centered with margins
+
+    with subcol2:
+        col1, col2 = st.columns(2)
+
+        with col1:
+            y_min = st.number_input(
+                "Y-axis Min (Stress)",
+                min_value=0.0,
+                max_value=10.0,
+                value=0.0,
+                step=1.0,
+                help="Controls the lower bound of the Y-axis in Age vs Stress Chart. Recommended: 5.0"
+            )
+
+        with col2:
+            y_max = st.number_input(
+                "Y-axis Max (Stress)",
+                min_value=0.0,
+                max_value=10.0,
+                value=6.0,
+                step=0.1,
+                help="Controls the upper bound of the Y-axis in Age vs Stress Chart. Recommended: 5.6"
+            )
+
+
 
 
 # Chart 3: Avg Stress by Age Group
@@ -120,10 +136,13 @@ bar = alt.Chart(df).mark_bar().encode(
     y=alt.Y("mean(stress_level):Q", title="Avg Stress Level", scale=alt.Scale(domain=[y_min, y_max])),
     color=alt.condition(
         age_selection,
-        alt.Color("bin_age:N", scale=alt.Scale(
-            domain=["16–24", "25–34", "35–44", "45–54", "55–64", "65+"],
-            range=["#a8c8ff", "#538eff", "#003366", "#296eff", "#7fabff", "#d3e5ff"]
-        )),
+        alt.Color("bin_age:N",
+            scale=alt.Scale(
+                domain=["16–24", "25–34", "35–44", "45–54", "55–64", "65+"],
+                range=["#a8c8ff", "#538eff", "#003366", "#296eff", "#7fabff", "#d3e5ff"]
+            ),
+            legend=alt.Legend(title="Age Groups ")
+        ),
         alt.value("lightgray")
     ),
     tooltip=[
@@ -185,7 +204,7 @@ chart4 = alt.Chart(df).transform_filter(age_selection).transform_aggregate(
     y=alt.Y("mean_stress:Q", title="Avg Stress Level"),
     color=alt.Color("color_value:Q",
         scale=alt.Scale(scheme="purples", domain=[0, 1]),
-        legend=alt.Legend(title="Relative Respondent Count", orient="right")
+        legend=alt.Legend(title="Relative\nRespondent\nCount", orient="right")
     ),
     tooltip=[
         alt.Tooltip("notification_bin:N", title="Notification Range"),
@@ -199,12 +218,74 @@ chart4 = alt.Chart(df).transform_filter(age_selection).transform_aggregate(
 st.altair_chart(chart3 | chart4)
 
 
+with st.expander("🔎 What These Charts Show (Stress, Age, & Notifications)", expanded=False):
+    st.markdown("""
+    These two charts explore how **stress levels vary with age** and **how age groups differ in notification volume**.
+    
+    - In the left chart we find that **perceived stress may peak around middle years** and generally **decrease towards your retirement years.**
+    Overall, this would make sense, as younger generations have a greater capacity to deal with stress than older generations who in addition to work related stress
+    often experience family related stress, which dwindles as you head toward retirement. 
+                
+    - The right chart reveals how often each age group receives phone notifications and how that correlates with stress. We found that in your younger years
+    16-24 and retirement years 65+ you experienced **greater stress levels when notification volumes were high**, compared with all other age groups were the **highest stress levels
+    were reported with fewer notifications**. This may suggest that when you're already stressed (in you middle years) each **additional notification is vexing.**
+
+    """)
+
+with st.expander("❓ Further Questions", expanded=False):
+    st.markdown ("""                           
+    Further questions:
+                 
+    - While we suspect that primarily **work** and family are influencing the stress levels, what other factors could be at play?
+                 
+        - Could it be that if you are happier at your work, you experience less stress?
+                 
+        - Do you experience less stress because you're happier or because you are more productive?
+
+    We will explore both of these questions in the next section.
+
+    """)
+
+# -----------------------
+# 📊 Chart 7: Violin Plot of Stress Level by Age Group
+# -----------------------
+with st.expander("🎻 Stress Distribution by Age Group Violin Plot (Uncertainty)", expanded=False):
+    # Full-width violin plot
+    fig, ax = plt.subplots(figsize=(9, 4.5))  # Wide aspect ratio
+    sns.violinplot(data=df, x="bin_age", y="stress_level", inner="quartile", palette="muted", ax=ax)
+    ax.set_title("Stress Level Distribution by Age Group")
+    ax.set_xlabel("Age Group")
+    ax.set_ylabel("Stress Level")
+    plt.xticks(rotation=0)
+    st.pyplot(fig)
+
+    # Explanatory paragraph below the chart
+    st.markdown("""
+    #### What This Shows  
+    The violin plot illustrates the **distribution of stress levels** within each age group,
+    capturing both the **spread** and **density** of responses.  
+    The shape of each "violin" shows where stress levels are most concentrated — for example, wider sections mean more respondents reported stress in that range.  
+    Overall we find that eventhough the Age vs Stress chart above suggests a potential slight relationship, through this violin plot we find that **more 
+    investigation** is needed to draw any conclusions about the relationship between age and stress levels, as there is much overlap.
+    Nonetheless, what is interesting is that even in the violin plot, we find that 65+ age group has the widest base, compared to younger generations that
+    have a slightly wider top. This suggests that with **more investigation** we may uncover **reliable patterns** that imply **stress is parabolic across age groups**, peaking in the middle age groups and decreasing in older generations. 
+    """)
+
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+
 
 
 # -----------------------
-# 📊 CHART SET 3: Satisfaction vs Productivity
+# 📊 CHART SET 2: Satisfaction vs Productivity
 # -----------------------
 st.markdown("### 😌 Job Satisfaction Increases with Age and Productivity")
+st.markdown(
+    "<div style='font-size:0.9rem; color:gray;'>Try clicking the bars in the Age vs Job Satisfaction chart to learn more about each age group's Actual Productivity spread.</div>",
+    unsafe_allow_html=True
+)
+
+st.markdown("<br><br>", unsafe_allow_html=True)
 
 age_selection_2 = alt.selection_multi(fields=["coarse_bin_age"])
 
@@ -258,5 +339,43 @@ regression = alt.Chart(df).transform_filter(age_selection_2).transform_regressio
 
 chart6 = (scatter + regression).properties(width=400, height=400)
 
+# Display charts side by side
 st.altair_chart(chart5 | chart6)
 
+with st.expander("🔎 What These Charts Show (Job Satisfaction, Age, & Productivity)", expanded=False):
+    st.markdown("""
+    These charts examine the **relationship between age, productivity, and job satisfaction**.
+
+    - The left bar chart highlights how average job satisfaction may rise with age. Overall, this would explain the lower stress levels in the older (retirement) age group
+    as they are more satisfied with their work. 
+    - The right scatter plot shows how actual productivity scores relate to job satisfaction, with a red regression line. We see that job satisfaction and productivity are 
+    **positively correlated** across all age groups, suggesting that **higher productivity may lead to greater job satisfaction** and vice versa.
+
+    Taken together, these charts suggest that **older individuals may report both higher satisfaction and a stronger alignment between productivity and happiness at work** which lowers their
+    perceived stress. Now why is it that older generations are more likely to feel this way than younger generations? It may be because they've had more time to find a job that suits them or
+    they've merely grown into their roles at comfortable jobs. 
+            
+    """)
+
+with st.expander("📌 The Big Takeaway", expanded=False):
+    st.markdown("""
+                
+    This suggests that one key to a healthy life is finding **a job that excites you,** as this may **boost** your **overall productivity and job satisfaction**, **lowering** your overall **stress levels**. This way you may only
+    experience **significant stress** during particuraly **busy times** at your work (which may be correlated with **higher notification volumes**). 
+                
+    However, of course as outlined in the uncertainty section **more investigation is required** to determine a proper causal relationship, as there remains significant of uncertainty.
+    
+    """)
+
+
+
+st.markdown("---")
+st.markdown(
+    """
+    <div style='text-align: center; font-size: 0.85rem; color: gray;'>
+        📊 Data Source: <a href="https://www.kaggle.com/datasets/mahdimashayekhi/social-media-vs-productivity" target="_blank">Kaggle – Social Media vs Productivity</a><br>
+        © Lucas Schmidt, 2025. All rights reserved.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
