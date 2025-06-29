@@ -107,25 +107,26 @@ with st.container():
     with subcol2:
         col1, col2 = st.columns(2)
 
-        with col1:
-            y_min = st.number_input(
-                "Y-axis Min (Stress)",
-                min_value=0.0,
-                max_value=10.0,
-                value=0.0,
-                step=1.0,
-                help="Controls the lower bound of the Y-axis in Age vs Stress Chart. Recommended: 5.0"
-            )
+    with col1:
+        y_min = st.number_input(
+            "Y-axis Min (Stress)",
+            min_value=0.0,
+            max_value=10.0,
+            value=0.0,
+            step=1.0,
+            help="Controls the lower bound of the Y-axis in Age vs Stress Chart. Recommended: 5.0.\nNote: Adjusting the scale may exaggerate perceived trends—use cautiously to avoid misleading interpretations."
+        )
 
-        with col2:
-            y_max = st.number_input(
-                "Y-axis Max (Stress)",
-                min_value=0.0,
-                max_value=10.0,
-                value=6.0,
-                step=0.1,
-                help="Controls the upper bound of the Y-axis in Age vs Stress Chart. Recommended: 5.6"
-            )
+    with col2:
+        y_max = st.number_input(
+            "Y-axis Max (Stress)",
+            min_value=0.0,
+            max_value=10.0,
+            value=6.0,
+            step=0.1,
+            help="Controls the upper bound of the Y-axis in Age vs Stress Chart. Recommended: 5.6.\nNote: Adjusting the scale may exaggerate perceived trends—use cautiously to avoid misleading interpretations."
+        )
+
 
 
 
