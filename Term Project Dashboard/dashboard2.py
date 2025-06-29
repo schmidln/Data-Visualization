@@ -368,6 +368,19 @@ with st.expander("📌 The Big Takeaway", expanded=False):
     
     """)
 
+with st.expander("📌 Further Exploration - Filter Controls - Big Takeaway", expanded=False):
+    st.markdown("""
+                
+    If you **toggle on** the "Only Show Users Who Use Focus Apps" filter, you will find that the **stress levels are significantly lower** across all age groups, and decrease linearly with age. 
+    This suggests that **using focus apps may help reduce stress levels**.
+                
+    The question just remains why are focus apps more effective with increasing age. One reason may be that discipline increases with age, meaning focus apps become more effective. However, more research is required
+    to truly determine this.
+                
+    Overall, **consider using focus apps** as they may help **boost** **productivity** and **lower stress levels** even if you are not satisfied with your job.
+    
+    """)
+
 
 
 st.markdown("---")
